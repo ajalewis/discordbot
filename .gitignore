@@ -1,0 +1,6 @@
+.env
+.DS_Store
+*.pyc
+__pycache__
+discloud.config
+commands/__pycache__
