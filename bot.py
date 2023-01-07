@@ -11,9 +11,10 @@ def discord_bot():
   load_dotenv()
   
   token = os.getenv('token_dev')
+  activity = discord.Activity(type=discord.ActivityType.watching, name="Zealots Server")
   intents = discord.Intents.default()
   intents.message_content = True
-  bot = commands.Bot(command_prefix='!', intents=intents)
+  bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 
   async def reply(ctx, message: str):
 
