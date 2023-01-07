@@ -10,7 +10,7 @@ from commands.shuffle_teams import *
 def discord_bot():
   load_dotenv()
   
-  token = os.environ['token_dev']
+  token = os.getenv('token_dev')
   intents = discord.Intents.default()
   intents.message_content = True
   bot = commands.Bot(command_prefix='!', intents=intents)
