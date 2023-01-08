@@ -60,11 +60,11 @@ def discord_bot():
 
     if None in (z, y):
       response_not_enough = await ctx.send(
-        f"{ctx.author.mention} You didn't enter enough players! Please try again ", delete_after=10
+        f"{ctx.author.mention} You didn't enter enough players! Please try again ", delete_after=5
       )
       await ctx.message.delete()
     else:
-      await ctx.send(embed=embed, delete_after=600)
+      await ctx.send(embed=embed, delete_after=300)
       await ctx.message.delete()
 
   bot.run(token)
