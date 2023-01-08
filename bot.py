@@ -10,7 +10,7 @@ from commands.shuffle_teams import *
 def discord_bot():
   load_dotenv()
   
-  token = os.getenv('token_dev')
+  token = os.getenv('token_prod')
   activity = discord.Activity(type=discord.ActivityType.watching, name="Zealots Server")
   intents = discord.Intents.default()
   intents.message_content = True
