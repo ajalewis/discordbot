@@ -10,7 +10,7 @@ from commands.shuffle_teams import *
 def discord_bot():
   load_dotenv()
   
-  token = os.getenv('token_prod')
+  token = os.getenv('token_dev')
   activity = discord.Activity(type=discord.ActivityType.watching, name="Zealots Server")
   intents = discord.Intents.default()
   intents.message_content = True
@@ -64,8 +64,13 @@ def discord_bot():
       )
       await ctx.message.delete()
     else:
-      await ctx.send(embed=embed, delete_after=300)
       await ctx.message.delete()
+      with open('spinwheel.gif', 'rb') as f:
+        gif = discord.File(f)
+      await ctx.send(content='Spinning the wheel!  🤓', delete_after=0, file=gif)
+      f.close
+      time.sleep(2)
+      await ctx.send(embed=embed, delete_after=300)
 
   bot.run(token)
 
