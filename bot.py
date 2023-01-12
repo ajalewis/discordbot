@@ -63,29 +63,39 @@ def discord_bot():
       )
       await ctx.message.delete()
     else:
-      await ctx.message.delete()
       with open('spinwheel.gif', 'rb') as f:
         gif = discord.File(f)
-      await ctx.send(content='Spinning the wheel!  🤓', delete_after=0, file=gif)
-      f.close
-      time.sleep(2)
+      await ctx.message.delete()
+      channel = ctx.author.voice.channel
+      vc = await channel.connect()
+      vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
+      while vc.is_playing():
+        with open('spinwheel.gif', 'rb') as f:
+          gif = discord.File(f)
+        await ctx.send(content='Spinning the wheel!  🤓', delete_after=1, file=gif)
+        time.sleep(1.5)
+        break
+      await vc.disconnect()
       await ctx.send(embed=embed, delete_after=300)
 
   @bot.command()  
   async def tick(ctx):
-    channel = ctx.author.voice.channel
-    if channel != None:
-        vc = await channel.connect()
-        vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
-        # Sleep while audio is playing.
-        while vc.is_playing():
-            time.sleep(.1)
-        await vc.disconnect()
+    state = ctx.author.voice
+    vc_connected = ctx.author.voice.channel
+    if state != None:
+      vc = await vc_connected.connect()
+      vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
+      while vc.is_playing():
+        with open('spinwheel.gif', 'rb') as f:
+          gif = discord.File(f)
+        await ctx.send(content='Spinning the wheel!  🤓', delete_after=1, file=gif)
+        time.sleep(1.5)
+        break
+      await vc.disconnect()
     else:
-        await ctx.send(str(ctx.author.name) + "is not in a channel.")
-    # Delete command after the audio is done playing.
+        await ctx.send(ctx.author.mention + " You have to be in a voice channel to run this command", delete_after=5)
     await ctx.message.delete()
-    
+  
   bot.run(token)
 
 
