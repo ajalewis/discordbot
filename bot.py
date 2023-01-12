@@ -9,10 +9,9 @@ from commands.shuffle_teams import *
 
 def discord_bot():
   load_dotenv()
-  
   token = os.getenv('token_dev')
   activity = discord.Activity(type=discord.ActivityType.watching, name="Zealots Server")
-  intents = discord.Intents.default()
+  intents = discord.Intents.all()
   intents.message_content = True
   bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 
@@ -72,6 +71,21 @@ def discord_bot():
       time.sleep(2)
       await ctx.send(embed=embed, delete_after=300)
 
+  @bot.command()  
+  async def tick(ctx):
+    channel = ctx.author.voice.channel
+    if channel != None:
+        vc = await channel.connect()
+        vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
+        # Sleep while audio is playing.
+        while vc.is_playing():
+            time.sleep(.1)
+        await vc.disconnect()
+    else:
+        await ctx.send(str(ctx.author.name) + "is not in a channel.")
+    # Delete command after the audio is done playing.
+    await ctx.message.delete()
+    
   bot.run(token)
 
 
