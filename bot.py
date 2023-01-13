@@ -35,10 +35,14 @@ def discord_bot():
   @bot.command(description='Will randomize players up to 4 teams of 2 or 3 per team. Run !shuffle and then enter names separated by a space. Names can be @<USER> or normal strings.',
                brief='Shuffles players into teams up 4.')
   async def shuffle(ctx):
+    voice_channel = ctx.author.voice
+    if voice_channel == None:
+        await ctx.send(ctx.author.mention + " You have to be in a voice channel to run this command!", delete_after=5)
+        return
     try:
-      players = await reply(ctx, "Please list at least 4 players")
-      shuffled_players = players.split()
-      random.shuffle(shuffled_players)
+        players = await reply(ctx, "Please list at least 4 players")
+        shuffled_players = players.split()
+        random.shuffle(shuffled_players)
     except asyncio.TimeoutError:
       await ctx.send(f"{ctx.author.mention} You were too slow to answer!", delete_after=5)
       return
@@ -63,39 +67,55 @@ def discord_bot():
       )
       await ctx.message.delete()
     else:
-      with open('spinwheel.gif', 'rb') as f:
-        gif = discord.File(f)
-      await ctx.message.delete()
-      channel = ctx.author.voice.channel
-      vc = await channel.connect()
-      vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
+      vc_connected = ctx.author.voice.channel
+      vc = await vc_connected.connect()
+      vc.play(discord.FFmpegPCMAudio(source="tick-wheel.mp3"))
       while vc.is_playing():
-        with open('spinwheel.gif', 'rb') as f:
+        with open('wheel-slow.gif', 'rb') as f:
           gif = discord.File(f)
-        await ctx.send(content='Spinning the wheel!  🤓', delete_after=1, file=gif)
-        time.sleep(1.5)
+        await ctx.send(content='Spinning the wheel!  🤓', delete_after=0, file=gif)
+        time.sleep(8)
         break
+        time.sleep(1)
       await vc.disconnect()
       await ctx.send(embed=embed, delete_after=300)
 
   @bot.command()  
   async def tick(ctx):
     state = ctx.author.voice
-    vc_connected = ctx.author.voice.channel
+    vc_connected = ctx.author.channel
     if state != None:
       vc = await vc_connected.connect()
-      vc.play(discord.FFmpegPCMAudio(source="wheelnoise.mp3"))
+      vc.play(discord.FFmpegPCMAudio(source="tick-wheel.mp3"))
       while vc.is_playing():
-        with open('spinwheel.gif', 'rb') as f:
+        with open('wheel-slow.gif', 'rb') as f:
           gif = discord.File(f)
         await ctx.send(content='Spinning the wheel!  🤓', delete_after=1, file=gif)
-        time.sleep(1.5)
+        time.sleep(9)
         break
       await vc.disconnect()
     else:
         await ctx.send(ctx.author.mention + " You have to be in a voice channel to run this command", delete_after=5)
     await ctx.message.delete()
   
+  
+  @bot.command()
+  async def t(ctx):
+      # Gets voice channel of message author
+    voice_channela = ctx.author.voice
+    channel = None
+    if voice_channela != None:
+        channel = voice_channela.name
+        vc = await voice_channela.connect()
+        vc.play(discord.FFmpegPCMAudio(source="tick-wheel"))
+        # Sleep while audio is playing.
+        while vc.is_playing():
+            time.sleep(.1)
+        await vc.disconnect()
+    else:
+        await ctx.send(str(ctx.author.name) + "is not in a channel.")
+    # Delete command after the audio is done playing.
+    await ctx.message.delete()
   bot.run(token)
 
 
