@@ -80,6 +80,7 @@ def discord_bot():
         time.sleep(1)
       await vc.disconnect()
       await ctx.send(embed=embed, delete_after=300)
+      await ctx.message.delete()
 
   bot.run(token)
 
