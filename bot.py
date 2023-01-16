@@ -51,7 +51,7 @@ def discord_bot():
                           description="The shuffled teams are now:")
     embed.set_thumbnail(
       url=
-      "https://cdn.discordapp.com/attachments/338614846125899777/1059762564059369502/the-punisher-wallpaper-preview.png"
+      "https://i.ibb.co/g9XG1k5/output-onlinepngtools.png"
     )
     embed.add_field(name="Team 1:", value=z, inline=True)
     embed.add_field(name="Team 2:", value=y, inline=True)
