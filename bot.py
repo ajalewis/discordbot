@@ -1,5 +1,6 @@
 import time
 import os
+import re
 import discord
 import asyncio
 import random
@@ -31,7 +32,13 @@ def discord_bot():
   @bot.event
   async def on_ready():
     print(f'{bot.user} is up and running')
-      
+    
+  @bot.event
+  async def on_command_error(ctx, e):
+    if ctx.author == bot.user :
+      return
+    await ctx.send(f"{ctx.author.mention} That is not a valid command. Please run !help to list them") 
+          
   @bot.command(description='Will randomize players up to 4 teams of 2 or 3 per team. Run !shuffle and then enter names separated by a space. Names can be @<USER> or normal strings.',
                brief='Shuffles players into teams up 4.')
   async def shuffle(ctx):
