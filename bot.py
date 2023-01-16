@@ -23,7 +23,7 @@ def discord_bot():
   async def on_command_error(ctx, e):
     if ctx.author == bot.user :
       return
-    await ctx.send(f"{ctx.author.mention} That is not a valid command. Please run !help to list them", delete_after = 5)
+    await ctx.send(f"{ctx.author.mention} That is not a valid command. Please run !help to list them", delete_after=5)
     await ctx.message.delete()
 
           
