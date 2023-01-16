@@ -16,19 +16,6 @@ def discord_bot():
   intents.message_content = True
   bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 
-  async def reply(ctx, message: str):
-
-    def check(m):
-      return m.author == ctx.author and m.channel == ctx.channel and len(
-        message.split()) >= 3
-
-    question = await ctx.send(message)
-    response = await bot.wait_for("message", check=check, timeout=35.0)
-    await question.delete()
-    await response.delete()
-
-    return str(response.content)
-
   @bot.event
   async def on_ready():
     print(f'{bot.user} is up and running')
@@ -37,7 +24,9 @@ def discord_bot():
   async def on_command_error(ctx, e):
     if ctx.author == bot.user :
       return
-    await ctx.send(f"{ctx.author.mention} That is not a valid command. Please run !help to list them") 
+    await ctx.send(f"{ctx.author.mention} That is not a valid command. Please run !help to list them", delete_after = 5)
+    await ctx.message.delete()
+
           
   @bot.command(description='Will randomize players up to 4 teams of 2 or 3 per team. Run !shuffle and then enter names separated by a space. Names can be @<USER> or normal strings.',
                brief='Shuffles players into teams up 4.')
@@ -88,6 +77,19 @@ def discord_bot():
       await vc.disconnect()
       await ctx.send(embed=embed, delete_after=300)
       await ctx.message.delete()
+
+  async def reply(ctx, message: str):
+
+    def check(m):
+      return m.author == ctx.author and m.channel == ctx.channel and len(
+        message.split()) >= 3
+
+    question = await ctx.send(message)
+    response = await bot.wait_for("message", check=check, timeout=35.0)
+    await question.delete()
+    await response.delete()
+
+    return str(response.content)
 
   bot.run(token)
 
