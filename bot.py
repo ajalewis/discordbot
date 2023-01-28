@@ -6,8 +6,14 @@ import random
 from discord.ext import commands
 from dotenv import load_dotenv
 from commands.shuffle_teams import *
+import logging
 
-def discord_bot():
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%d-%m-%Y %H:%M:%S')
+
+def discordBot():
   load_dotenv()
   token = os.getenv('token_dev')
   activity = discord.Activity(type=discord.ActivityType.watching, name="Zealots Server")
@@ -17,7 +23,7 @@ def discord_bot():
 
   @bot.event
   async def on_ready():
-    print(f'{bot.user} is up and running')
+    logging.info(f'{bot.user} is up and running')
     
   @bot.event
   async def on_command_error(ctx, e):
@@ -27,8 +33,8 @@ def discord_bot():
     await ctx.message.delete()
 
           
-  @bot.command(description='Will randomize players up to 4 teams of 2 or 3 per team. Run !shuffle and then enter names separated by a space. Names can be @<USER> or normal strings.',
-               brief='Shuffles players into teams up 4.')
+  @bot.command(description='Will randomize players in teams of 2 or 3 per team. Run !shuffle and then enter names separated by a space. Names can be @<USER> or free text.',
+               brief='Shuffles players into teams of 2.')
   async def shuffle(ctx):
     voice_channel = ctx.author.voice
     if voice_channel == None:
@@ -76,6 +82,7 @@ def discord_bot():
       await vc.disconnect()
       await ctx.send(embed=embed, delete_after=300)
       await ctx.message.delete()
+      logging.info(f'The above function cycle was exectued by {ctx.author.name}')
 
   async def reply(ctx, message: str):
 
@@ -92,4 +99,4 @@ def discord_bot():
 
   bot.run(token)
 
-discord_bot()
+discordBot()
