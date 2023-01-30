@@ -65,7 +65,7 @@ class Shuffle(commands.Cog):
     async def shuffle(self, ctx):
       voice_channel = ctx.author.voice
       if voice_channel == None:
-          await ctx.send(f"{ctx.author.mention} You need to be in a voice channel to run this command!", delete_after=5)
+          await ctx.send(f"{ctx.author.mention} You need to be in a voice channel to run the !shuffle command!", delete_after=5)
           await ctx.message.delete()
           return
       try:
