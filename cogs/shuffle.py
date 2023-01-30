@@ -109,7 +109,7 @@ class Shuffle(commands.Cog):
         await vc.disconnect()
         await ctx.send(embed=embed, delete_after=300)
         await ctx.message.delete()
-        logging.info(f'The above function cycle was exectued by {ctx.author.name}')
+        logging.info(f'{ctx.author} sent the !shuffle command')
         
     async def reply(self, ctx, message: str):
       def check(m):

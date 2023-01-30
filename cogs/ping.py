@@ -13,7 +13,7 @@ class Ping(commands.Cog):
   @commands.command()
   async def ping(self, ctx):
     await ctx.send("Pong")
-    logging.info(f'{ctx.author} sent !ping')
+    logging.info(f'{ctx.author} sent the !ping command')
     
 async def setup(bot):
   await bot.add_cog(Ping(bot))
