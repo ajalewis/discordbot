@@ -10,9 +10,11 @@ class Ping(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
   
-  @commands.command()
+  @commands.command(description='The bot will reply with "Pong"',
+               brief='Replies with "Pong"')
   async def ping(self, ctx):
-    await ctx.send("Pong")
+    await ctx.send("Pong", delete_after=3)
+    await ctx.message.delete()
     logging.info(f'{ctx.author} sent the !ping command')
     
 async def setup(bot):
